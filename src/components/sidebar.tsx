@@ -12,15 +12,17 @@ import {
   HiShoppingBag,
   HiUsers,
 } from "react-icons/hi";
+import { NavLink, useLocation } from "react-router-dom";
 
 const ExampleSidebar: FC = function () {
+  const location = useLocation();
   const [currentPage, setCurrentPage] = useState("");
 
   useEffect(() => {
-    const newPage = window.location.pathname;
+    const newPage = location.pathname;
 
     setCurrentPage(newPage);
-  }, [setCurrentPage]);
+  }, [location]);
 
   return (
     <Sidebar aria-label="Sidebar with multi-level dropdown example">
@@ -38,40 +40,67 @@ const ExampleSidebar: FC = function () {
           <Sidebar.Items>
             <Sidebar.ItemGroup>
               <Sidebar.Item
-                href="/"
+                as={NavLink}
+                to="/"
                 icon={HiChartPie}
                 className={
-                  "/" === currentPage ? "bg-gray-100 dark:bg-gray-700" : ""
+                  currentPage === "/" ? "bg-gray-100 dark:bg-gray-700" : ""
                 }
               >
                 Dashboard
               </Sidebar.Item>
               <Sidebar.Item
-                href="/e-commerce/products"
+                as={NavLink}
+                to="/transaksi"
                 icon={HiShoppingBag}
                 className={
-                  "/e-commerce/products" === currentPage
+                  currentPage === "/transaksi"
                     ? "bg-gray-100 dark:bg-gray-700"
                     : ""
                 }
               >
-                Products
+                Transaksi
               </Sidebar.Item>
               <Sidebar.Item
-                href="/users/list"
+                as={NavLink}
+                to="/akun"
+                icon={HiShoppingBag}
+                className={
+                  currentPage === "/akun"
+                    ? "bg-gray-100 dark:bg-gray-700"
+                    : ""
+                }
+              >
+                Akun
+              </Sidebar.Item>
+              <Sidebar.Item
+                as={NavLink}
+                to="/kepemilikan"
+                icon={HiShoppingBag}
+                className={
+                  currentPage === "/kepemilikan"
+                    ? "bg-gray-100 dark:bg-gray-700"
+                    : ""
+                }
+              >
+                Kepemilikan
+              </Sidebar.Item>
+              <Sidebar.Item
+                as={NavLink}
+                to="/users/list"
                 icon={HiUsers}
                 className={
-                  "/users/list" === currentPage
+                  currentPage === "/users/list"
                     ? "bg-gray-100 dark:bg-gray-700"
                     : ""
                 }
               >
                 Users list
               </Sidebar.Item>
-              <Sidebar.Item href="/authentication/sign-in" icon={HiLogin}>
+              <Sidebar.Item as={NavLink} to="/authentication/sign-in" icon={HiLogin}>
                 Sign in
               </Sidebar.Item>
-              <Sidebar.Item href="/authentication/sign-up" icon={HiPencil}>
+              <Sidebar.Item as={NavLink} to="/authentication/sign-up" icon={HiPencil}>
                 Sign up
               </Sidebar.Item>
             </Sidebar.ItemGroup>

@@ -1,9 +1,9 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { Badge, Dropdown, Table, useTheme } from "flowbite-react";
-import type { FC } from "react";
+import {useState, useEffect } from "react";
 import Chart from "react-apexcharts";
 import NavbarSidebarLayout from "../layouts/navbar-sidebar";
-
+import axios from "axios";
 const DashboardPage: FC = function () {
   return (
     <NavbarSidebarLayout>
@@ -21,13 +21,37 @@ const DashboardPage: FC = function () {
   );
 };
 
-const SalesThisWeek: FC = function () {
+const SalesThisWeek= function () {
+  const [transactionCount, setTransactionCount] = useState(0);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const headers = {
+      Authorization: `${token}`,
+    };
+    axios.get("api/counttransaksi",{
+      headers:headers,
+    })
+      .then(response => {
+        const count = response.data[0].difference;
+
+        setTransactionCount(count);
+      })
+      .catch(error => {
+        console.error("Failed to retrieve transaction count:", error);
+      });
+  }, []);
+  const formattedTransactionCount = parseInt(transactionCount).toLocaleString("id-ID", {
+    style: "currency",
+    currency: "IDR",
+    minimumFractionDigits: 2,
+  });
   return (
     <div className="rounded-lg bg-white p-4 shadow dark:bg-gray-800 sm:p-6 xl:p-8">
       <div className="mb-4 flex items-center justify-between">
         <div className="shrink-0">
           <span className="text-2xl font-bold leading-none text-gray-900 dark:text-white sm:text-3xl">
-            $45,385
+          {formattedTransactionCount}
           </span>
           <h3 className="text-base font-normal text-gray-600 dark:text-gray-400">
             Sales this week
